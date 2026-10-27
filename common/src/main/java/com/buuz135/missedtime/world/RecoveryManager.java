@@ -3,6 +3,7 @@ package com.buuz135.missedtime.world;
 import com.buuz135.missedtime.config.MissedTimeConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundSoundPacket;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -43,7 +44,7 @@ public final class RecoveryManager {
             return;
         }
         server = minecraftServer;
-        data = minecraftServer.overworld().getDataStorage().computeIfAbsent(MissedTimeSavedData.FACTORY, MissedTimeSavedData.NAME);
+        data = minecraftServer.overworld().getDataStorage().computeIfAbsent(MissedTimeSavedData.TYPE);
         resetSession();
     }
 
@@ -61,7 +62,7 @@ public final class RecoveryManager {
     }
 
     public static void onPlayerJoined(ServerPlayer player) {
-        if (!player.getServer().isSingleplayer() || server == null || data == null || activePlayerId != null || promptOwner != null) {
+        if (!player.level().getServer().isSingleplayer() || server == null || data == null || activePlayerId != null || promptOwner != null) {
             return;
         }
         long now = System.currentTimeMillis();
@@ -228,7 +229,7 @@ public final class RecoveryManager {
         int previousSpeedIndex = speedIndex;
         speedIndex = Math.min(SPEEDS.length - 1, speedIndex + 1);
         if (speedIndex != previousSpeedIndex) {
-            player.playNotifySound(SoundEvents.NOTE_BLOCK_PLING.value(), SoundSource.PLAYERS, 0.8F, speedPitch());
+            playSpeedSound(player);
         }
         sendStatus(player);
         return 1;
@@ -241,7 +242,7 @@ public final class RecoveryManager {
         int previousSpeedIndex = speedIndex;
         speedIndex = Math.max(0, speedIndex - 1);
         if (speedIndex != previousSpeedIndex) {
-            player.playNotifySound(SoundEvents.NOTE_BLOCK_PLING.value(), SoundSource.PLAYERS, 0.8F, speedPitch());
+            playSpeedSound(player);
         }
         sendStatus(player);
         return 1;
@@ -252,6 +253,12 @@ public final class RecoveryManager {
         double maximumMultiplier = SPEEDS[SPEEDS.length - 1];
         double normalizedMultiplier = Math.log1p(multiplier) / Math.log1p(maximumMultiplier);
         return (float) (0.5 + normalizedMultiplier * 1.5);
+    }
+
+    private static void playSpeedSound(ServerPlayer player) {
+        player.connection.send(new ClientboundSoundPacket(
+                SoundEvents.NOTE_BLOCK_PLING, SoundSource.PLAYERS,
+                player.getX(), player.getY(), player.getZ(), 0.8F, speedPitch(), player.getRandom().nextLong()));
     }
 
     public static int stop(ServerPlayer player) {
@@ -298,7 +305,7 @@ public final class RecoveryManager {
         int percent = totalTicks == 0 ? 100 : (int) (processed * 100 / totalTicks);
         double rate = paused ? 0 : calculateRate();
         String state = paused ? "paused" : String.format("%.1f t/s", rate);
-        player.displayClientMessage(Component.translatable("message.missedtime.status", percent, pendingTicks, SPEEDS[speedIndex], state, formatEta(rate)), true);
+        player.sendOverlayMessage(Component.translatable("message.missedtime.status", percent, pendingTicks, SPEEDS[speedIndex], state, formatEta(rate)));
     }
 
     private static String formatEta(double rate) {

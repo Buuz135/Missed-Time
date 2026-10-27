@@ -5,6 +5,8 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.buuz135.missedtime.world.RecoveryManager;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
+import net.minecraft.server.permissions.PermissionCheck;
+import net.minecraft.server.permissions.Permissions;
 
 public final class MissedTimeCommands {
     private MissedTimeCommands() {
@@ -20,7 +22,7 @@ public final class MissedTimeCommands {
                 .then(Commands.literal("slower").executes(context -> RecoveryManager.slower(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("stop").executes(context -> RecoveryManager.stop(context.getSource().getPlayerOrException())))
                 .then(Commands.literal("simulate")
-                        .requires(source -> source.hasPermission(2))
+                        .requires(Commands.hasPermission(new PermissionCheck.Require(Permissions.COMMANDS_GAMEMASTER)))
                         .then(Commands.argument("minutes", IntegerArgumentType.integer(1))
                                 .executes(context -> RecoveryManager.simulate(
                                         context.getSource().getPlayerOrException(),

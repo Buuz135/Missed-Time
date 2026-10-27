@@ -51,17 +51,17 @@ public final class RecoveryParticipant {
         boolean wrongDimension = player.level().dimension() != dimension;
         boolean outsideRadius = player.position().distanceToSqr(position) > (double) radius * radius;
         if (wrongDimension || outsideRadius) {
-            ServerLevel target = player.server.getLevel(dimension);
+            ServerLevel target = player.level().getServer().getLevel(dimension);
             if (target != null) {
-                player.teleportTo(target, position.x, position.y, position.z, Set.of(), yRot, xRot);
+                player.teleportTo(target, position.x, position.y, position.z, Set.of(), yRot, xRot, false);
             }
         }
     }
 
     public void restore(ServerPlayer player) {
-        ServerLevel target = player.server.getLevel(dimension);
+        ServerLevel target = player.level().getServer().getLevel(dimension);
         if (target != null) {
-            player.teleportTo(target, position.x, position.y, position.z, Set.of(), yRot, xRot);
+            player.teleportTo(target, position.x, position.y, position.z, Set.of(), yRot, xRot, false);
         }
         player.setGameMode(GameType.SURVIVAL);
         player.setInvulnerable(false);

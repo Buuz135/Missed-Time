@@ -1,32 +1,27 @@
 package com.buuz135.missedtime.world;
 
-import net.minecraft.core.HolderLookup;
-import net.minecraft.nbt.CompoundTag;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 
 public final class MissedTimeSavedData extends SavedData {
     public static final String NAME = "missedtime";
-    public static final Factory<MissedTimeSavedData> FACTORY = new Factory<>(MissedTimeSavedData::new, MissedTimeSavedData::load, DataFixTypes.LEVEL);
+    public static final Codec<MissedTimeSavedData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.LONG.optionalFieldOf("LastPlayedEpochMillis", 0L).forGetter(MissedTimeSavedData::lastPlayedEpochMillis)
+    ).apply(instance, MissedTimeSavedData::new));
+    public static final SavedDataType<MissedTimeSavedData> TYPE = new SavedDataType<>(
+            Identifier.fromNamespaceAndPath("missedtime", NAME), MissedTimeSavedData::new, CODEC, DataFixTypes.LEVEL);
     private long lastPlayedEpochMillis;
 
     public MissedTimeSavedData() {
         lastPlayedEpochMillis = System.currentTimeMillis();
     }
 
-    private static MissedTimeSavedData load(CompoundTag tag, HolderLookup.Provider registries) {
-        MissedTimeSavedData data = new MissedTimeSavedData();
-        data.lastPlayedEpochMillis = tag.getLong("LastPlayedEpochMillis");
-        if (data.lastPlayedEpochMillis <= 0) {
-            data.lastPlayedEpochMillis = System.currentTimeMillis();
-        }
-        return data;
-    }
-
-    @Override
-    public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
-        tag.putLong("LastPlayedEpochMillis", lastPlayedEpochMillis);
-        return tag;
+    private MissedTimeSavedData(long lastPlayedEpochMillis) {
+        this.lastPlayedEpochMillis = lastPlayedEpochMillis > 0 ? lastPlayedEpochMillis : System.currentTimeMillis();
     }
 
     public long lastPlayedEpochMillis() {

@@ -17,11 +17,11 @@ public final class MissedTimeFabric implements ModInitializer {
             ServerTickEvents.START_SERVER_TICK.invoker().onStartTick(server);
             try {
                 server.getAllLevels().forEach(level -> {
-                    ServerTickEvents.START_WORLD_TICK.invoker().onStartTick(level);
+                    ServerTickEvents.START_LEVEL_TICK.invoker().onStartTick(level);
                     try {
                         level.tick(() -> true);
                     } finally {
-                        ServerTickEvents.END_WORLD_TICK.invoker().onEndTick(level);
+                        ServerTickEvents.END_LEVEL_TICK.invoker().onEndTick(level);
                     }
                 });
             } finally {

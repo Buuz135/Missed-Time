@@ -1,6 +1,6 @@
 package com.buuz135.missedtime.client;
 
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -27,12 +27,11 @@ public final class RecoveryPromptScreen extends Screen {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick) {
-        renderBackground(graphics, mouseX, mouseY, partialTick);
-        super.render(graphics, mouseX, mouseY, partialTick);
-        graphics.drawCenteredString(font, title, width / 2, height / 2 - 45, 0xFFFFFF);
-        graphics.drawCenteredString(font, prompt, width / 2, height / 2 - 15, 0xFFD166);
-        graphics.drawCenteredString(font, Component.translatable("screen.missedtime.details"), width / 2, height / 2 + 2, 0xB8C0CC);
+    public void extractRenderState(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+        super.extractRenderState(graphics, mouseX, mouseY, partialTick);
+        graphics.centeredText(font, title, width / 2, height / 2 - 45, 0xFFFFFFFF);
+        graphics.centeredText(font, prompt, width / 2, height / 2 - 15, 0xFFFFD166);
+        graphics.centeredText(font, Component.translatable("screen.missedtime.details"), width / 2, height / 2 + 2, 0xFFB8C0CC);
 
     }
 
