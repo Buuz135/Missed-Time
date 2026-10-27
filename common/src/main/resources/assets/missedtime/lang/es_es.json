@@ -1,0 +1,18 @@
+{
+  "message.missedtime.prompt": "Has estado fuera %s. ¿Recuperar %s ticks perdidos?",
+  "message.missedtime.unavailable": "No hay tiempo perdido disponible para recuperar.",
+  "message.missedtime.already_active": "Ya hay una recuperación de tiempo perdido activa.",
+  "message.missedtime.simulation": "Simulando %s minutos sin conexión como %s ticks perdidos.",
+  "message.missedtime.started": "Recuperando %s ticks. P: pausa, +/-: velocidad, Fin: detener.",
+  "message.missedtime.declined": "Se omitió la recuperación del tiempo perdido.",
+  "message.missedtime.paused": "Recuperación pausada. El mundo está congelado.",
+  "message.missedtime.resumed": "Recuperación reanudada.",
+  "message.missedtime.finished": "Recuperación del tiempo perdido completada.",
+  "message.missedtime.stopped": "Recuperación del tiempo perdido detenida.",
+  "message.missedtime.inactive": "No hay ninguna recuperación activa.",
+  "message.missedtime.status": "MissedTime: %s%% | quedan %s ticks | %sx | %s | Tiempo restante: ~%s",
+  "screen.missedtime.title": "¿Recuperar el tiempo perdido?",
+  "screen.missedtime.recover": "Recuperar",
+  "screen.missedtime.skip": "Omitir",
+  "screen.missedtime.details": "Podrás observar a menos de 32 bloques mientras tu cuerpo queda protegido."
+}

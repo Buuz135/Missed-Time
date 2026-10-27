@@ -1,0 +1,18 @@
+{
+  "message.missedtime.prompt": "You were away for %s. Recover %s missed ticks?",
+  "message.missedtime.unavailable": "There is no missed time available to recover.",
+  "message.missedtime.already_active": "A missed time recovery is already active.",
+  "message.missedtime.simulation": "Simulating %s offline minutes as %s missed ticks.",
+  "message.missedtime.started": "Recovering %s missed ticks. P: pause, +/-: speed, End: stop.",
+  "message.missedtime.declined": "Missed time recovery skipped.",
+  "message.missedtime.paused": "Missed time recovery paused. The world is frozen.",
+  "message.missedtime.resumed": "Missed time recovery resumed.",
+  "message.missedtime.finished": "Missed time recovery complete.",
+  "message.missedtime.stopped": "Missed time recovery stopped.",
+  "message.missedtime.inactive": "No missed time recovery is active.",
+  "message.missedtime.status": "MissedTime: %s%% | %s ticks left | %sx | %s | ETA: ~%s",
+  "screen.missedtime.title": "Recover missed time?",
+  "screen.missedtime.recover": "Recover",
+  "screen.missedtime.skip": "Skip",
+  "screen.missedtime.details": "You will spectate within 32 blocks while your body remains protected."
+}

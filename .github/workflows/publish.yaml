@@ -1,0 +1,63 @@
+name: Publish action
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v7
+      - name: setup jdk 25
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: temurin
+      - name: setup gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: make gradle wrapper executable
+        if: ${{ runner.os != 'Windows' }}
+        run: chmod +x ./gradlew
+      - name: build
+        run: ./gradlew build
+      - name: Publish Minecraft Mods Fabric
+        uses: Kir-Antipov/mc-publish@v3.3.1
+        with:
+          curseforge-id: 1769020
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          modrinth-id: FvCsvckN
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          files: |
+            fabric/build/libs/!(*-@(javadoc|sources)).jar
+            fabric/build/libs/*-@(javadoc|sources).jar
+          version-type: beta
+          environment: client | server
+          loaders: |
+            fabric
+          game-versions: |
+            1.21.1
+          java: 21
+          name: ""
+          changelog: "https://github.com/Buuz135/Missed-Time/commits/main"
+      - name: Publish Minecraft Mods NeoForge
+        uses: Kir-Antipov/mc-publish@v3.3.1
+        with:
+          curseforge-id: 1769020
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          modrinth-id: FvCsvckN
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+          files: |
+            neoforge/build/libs/!(*-@(javadoc|sources)).jar
+            neoforge/build/libs/*-@(javadoc|sources).jar
+          version-type: beta
+          loaders: neoforge
+          environment: client | server
+          game-versions: |
+            1.21.1
+          java: 21
+          name: ""
+          changelog: "https://github.com/Buuz135/Missed-Time/commits/main"
