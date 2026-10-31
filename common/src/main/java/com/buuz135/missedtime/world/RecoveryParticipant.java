@@ -7,7 +7,6 @@ import net.minecraft.world.level.GameType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Set;
 import java.util.UUID;
 
 public final class RecoveryParticipant {
@@ -53,7 +52,7 @@ public final class RecoveryParticipant {
         if (wrongDimension || outsideRadius) {
             ServerLevel target = player.server.getLevel(dimension);
             if (target != null) {
-                player.teleportTo(target, position.x, position.y, position.z, Set.of(), yRot, xRot);
+                player.teleportTo(target, position.x, position.y, position.z, yRot, xRot);
             }
         }
     }
@@ -61,7 +60,7 @@ public final class RecoveryParticipant {
     public void restore(ServerPlayer player) {
         ServerLevel target = player.server.getLevel(dimension);
         if (target != null) {
-            player.teleportTo(target, position.x, position.y, position.z, Set.of(), yRot, xRot);
+            player.teleportTo(target, position.x, position.y, position.z, yRot, xRot);
         }
         player.setGameMode(GameType.SURVIVAL);
         player.setInvulnerable(false);

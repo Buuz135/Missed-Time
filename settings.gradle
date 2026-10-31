@@ -2,17 +2,13 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
-        exclusiveContent {
-            forRepository {
-                maven {
-                    name = 'Fabric'
-                    url = uri('https://maven.fabricmc.net')
-                }
-            }
-            filter {
-                includeGroup('net.fabricmc')
-                includeGroup('fabric-loom')
-            }
+        maven {
+            name = 'Fabric'
+            url = uri('https://maven.fabricmc.net')
+        }
+        maven {
+            name = 'NeoForged'
+            url = uri('https://maven.neoforged.net/releases')
         }
         exclusiveContent {
             forRepository {
@@ -36,4 +32,4 @@ plugins {
 rootProject.name = 'MissedTime'
 include('common')
 include('fabric')
-include('neoforge')
+include('forge')

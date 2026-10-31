@@ -1,34 +1,25 @@
 plugins {
     id 'multiloader-loader'
-    id 'net.neoforged.moddev'
+    id 'net.neoforged.moddev.legacyforge'
 }
 
-neoForge {
-    version = neoforge_version
-    // Automatically enable neoforge AccessTransformers if the file exists
+legacyForge {
+    version = "${minecraft_version}-${forge_version}"
     def at = project(':common').file('src/main/resources/META-INF/accesstransformer.cfg')
     if (at.exists()) {
         accessTransformers.from(at.absolutePath)
     }
-    parchment {
-        minecraftVersion = parchment_minecraft
-        mappingsVersion = parchment_version
-    }
     runs {
         configureEach {
-            systemProperty('neoforge.enabledGameTestNamespaces', mod_id)
-            ideName = "NeoForge ${it.name.capitalize()} (${project.path})" // Unify the run config names with fabric
+            systemProperty('forge.enabledGameTestNamespaces', mod_id)
+            ideName = "Forge ${it.name.capitalize()} (${project.path})"
         }
         client {
             client()
         }
         data {
             data()
-
-            // DataGen can be run by - "./gradlew :neoforge:runData" in Terminal.
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
-
         }
         server {
             server()
@@ -39,6 +30,19 @@ neoForge {
             sourceSet sourceSets.main
         }
     }
+}
+
+dependencies {
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+}
+
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}.mixins.json"
+}
+
+jar {
+    manifest.attributes(['MixinConfigs': "${mod_id}.mixins.json"])
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }

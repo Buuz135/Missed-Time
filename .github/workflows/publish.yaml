@@ -39,11 +39,11 @@ jobs:
           loaders: |
             fabric
           game-versions: |
-            1.21.1
+            1.20.1
           java: 21
           name: ""
-          changelog: "https://github.com/Buuz135/Missed-Time/commits/main"
-      - name: Publish Minecraft Mods NeoForge
+          changelog: "https://github.com/Buuz135/Missed-Time/commits/1.20"
+      - name: Publish Minecraft Mods Forge
         uses: Kir-Antipov/mc-publish@v3.3.1
         with:
           curseforge-id: 1769020
@@ -51,13 +51,13 @@ jobs:
           modrinth-id: FvCsvckN
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
           files: |
-            neoforge/build/libs/!(*-@(javadoc|sources)).jar
-            neoforge/build/libs/*-@(javadoc|sources).jar
+            forge/build/libs/!(*-@(javadoc|sources)).jar
+            forge/build/libs/*-@(javadoc|sources).jar
           version-type: beta
-          loaders: neoforge
+          loaders: forge
           environment: client | server
           game-versions: |
-            1.21.1
+            1.20.1
           java: 21
           name: ""
-          changelog: "https://github.com/Buuz135/Missed-Time/commits/main"
+          changelog: "https://github.com/Buuz135/Missed-Time/commits/1.20"

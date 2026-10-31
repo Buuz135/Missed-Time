@@ -43,7 +43,7 @@ public final class RecoveryManager {
             return;
         }
         server = minecraftServer;
-        data = minecraftServer.overworld().getDataStorage().computeIfAbsent(MissedTimeSavedData.FACTORY, MissedTimeSavedData.NAME);
+        data = minecraftServer.overworld().getDataStorage().computeIfAbsent(MissedTimeSavedData::load, MissedTimeSavedData::new, MissedTimeSavedData.NAME);
         resetSession();
     }
 

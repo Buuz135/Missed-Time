@@ -1,20 +1,17 @@
 package com.buuz135.missedtime.world;
 
-import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.datafix.DataFixTypes;
 import net.minecraft.world.level.saveddata.SavedData;
 
 public final class MissedTimeSavedData extends SavedData {
     public static final String NAME = "missedtime";
-    public static final Factory<MissedTimeSavedData> FACTORY = new Factory<>(MissedTimeSavedData::new, MissedTimeSavedData::load, DataFixTypes.LEVEL);
     private long lastPlayedEpochMillis;
 
     public MissedTimeSavedData() {
         lastPlayedEpochMillis = System.currentTimeMillis();
     }
 
-    private static MissedTimeSavedData load(CompoundTag tag, HolderLookup.Provider registries) {
+    public static MissedTimeSavedData load(CompoundTag tag) {
         MissedTimeSavedData data = new MissedTimeSavedData();
         data.lastPlayedEpochMillis = tag.getLong("LastPlayedEpochMillis");
         if (data.lastPlayedEpochMillis <= 0) {
@@ -24,7 +21,7 @@ public final class MissedTimeSavedData extends SavedData {
     }
 
     @Override
-    public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries) {
+    public CompoundTag save(CompoundTag tag) {
         tag.putLong("LastPlayedEpochMillis", lastPlayedEpochMillis);
         return tag;
     }
