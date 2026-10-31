@@ -14,6 +14,6 @@ public final class MissedTime {
 
     public static void init() {
         MissedTimeConfig.load();
-        LOGGER.info("Loaded {}", MOD_NAME);
+        LOGGER.info("Loaded {} ", MOD_NAME);
     }
 }
